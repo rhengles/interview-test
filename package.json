@@ -1,11 +1,26 @@
 {
-  "name": "99jobs-test-rhengles",
+  "name": "interview-test-rhengles",
   "version": "1.0.0",
   "description": "",
   "main": "index.js",
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "prebuild": "eslint lib test",
+    "build": "rollup -c",
+    "pretest": "rollup -c rollup.config.test.js",
+    "test": "mocha test/rollup-bundle.js",
+    "prepublish": "npm run build && npm test"
   },
   "author": "",
-  "license": "MIT"
+  "license": "MIT",
+  "dependencies": {
+    "babel-eslint": "^4.1.8",
+    "babel-preset-es2015-rollup": "^1.1.1",
+    "chai": "^3.5.0",
+    "eslint": "^1.10.3",
+    "mocha": "^2.4.5",
+    "rollup": "^0.25.3",
+    "rollup-plugin-babel": "^2.3.9",
+    "rollup-plugin-multi-entry": "^1.1.0",
+    "source-map-support": "^0.4.0"
+  }
 }
