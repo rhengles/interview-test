@@ -7,7 +7,7 @@
     "prebuild": "eslint lib test",
     "build": "rollup -c rollup.config.js",
     "pretest": "rollup -c rollup.config.test.js",
-    "test": "mocha test/rollup-bundle.js",
+    "test": "mocha temp/test-bundle.js",
     "prepublish": "npm run build && npm test"
   },
   "author": "",
@@ -17,6 +17,7 @@
     "babel-preset-es2015-rollup": "^1.1.1",
     "chai": "^3.5.0",
     "eslint": "^1.10.3",
+    "jscs": "^2.10.1",
     "mocha": "^2.4.5",
     "rollup": "^0.25.3",
     "rollup-plugin-babel": "^2.3.9",

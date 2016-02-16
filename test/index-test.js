@@ -1,3 +1,5 @@
+/* global describe, it */
+
 import utils from '../lib/utils';
 import colors from './colors';
 import colorHex from './color-hex';

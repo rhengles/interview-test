@@ -6,6 +6,6 @@ export default {
   plugins: [babel(), multiEntry()],
   format: 'cjs',
   intro: 'require("source-map-support").install();',
-  dest: 'test/rollup-bundle.js',
+  dest: 'temp/test-bundle.js',
   sourceMap: true
 };
