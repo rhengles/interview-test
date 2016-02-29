@@ -6,11 +6,10 @@
   "scripts": {
     "sass": "node tasks/sass.js",
     "scripts": "rollup -c tasks/rollup.config.js",
-    "tags": "rollup -c tasks/rollup.config.tags.js",
     "pretest": "rollup -c tasks/rollup.config.test.js",
     "test": "mocha temp/test-bundle.js",
     "prebuild": "eslint lib test",
-    "build": "npm run sass && npm run scripts && npm run tags",
+    "build": "npm run sass && npm run scripts",
     "prepublish": "npm run build && npm test",
     "server": "node tasks/server.js"
   },
