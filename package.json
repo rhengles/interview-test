@@ -8,8 +8,9 @@
     "scripts": "rollup -c tasks/rollup.config.js",
     "pretest": "rollup -c tasks/rollup.config.test.js",
     "test": "mocha temp/test-bundle.js",
+    "pages": "node tasks/pages.js",
     "prebuild": "eslint lib test",
-    "build": "npm run sass && npm run scripts",
+    "build": "npm run sass && npm run scripts && npm run pages",
     "prepublish": "npm run build && npm test",
     "server": "node tasks/server.js"
   },
