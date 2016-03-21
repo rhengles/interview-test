@@ -1,3 +1,5 @@
+/*eslint no-console:0*/
+
 var fs = require('fs');
 var path = require('path');
 
@@ -5,12 +7,12 @@ function dir(opt) {
 	function next(cbNext) {
 		function processFile(name) {
 			function sendFile() {
-				if ( opt.verbose ) {
+				if (opt.verbose) {
 					console.log('sendfile', file);
 				}
 				return cbNext(null, file);
 			}
-			if ( opt.verbose ) {
+			if (opt.verbose) {
 				console.log('processfile', name);
 			}
 			var file =
@@ -18,30 +20,30 @@ function dir(opt) {
 				, stat: null
 				, dir: currentDir
 				};
-			if ( opt.rec || opt.stat ) {
+			if (opt.rec || opt.stat) {
 				var fpath = path.join(currentDir.name, currentDir.sub, name);
 				fs.stat(fpath, function(err, stat) {
-					if ( opt.verbose ) {
+					if (opt.verbose) {
 						console.log('stat', err, stat);
 					}
-					if ( err ) {
+					if (err) {
 						return cbNext(err);
 					}
 					file.stat = stat;
 					var rec = false;
-					if ( opt.rec && stat.isDirectory() ) {
-						rec = ( opt.rec instanceof Function
+					if (opt.rec && stat.isDirectory()) {
+						rec = (opt.rec instanceof Function
 							? opt.rec(file, currentDir)
 							: true
 							);
 					}
-					if ( rec ) {
+					if (rec) {
 						var sdir =
 							{ name: currentDir.name
 							, sub: path.join(currentDir.sub, name)
 							};
 						queue.push(sdir);
-						//return next(cbNext);
+						//Return next(cbNext);
 					}
 					return sendFile(file);
 				});
@@ -49,29 +51,29 @@ function dir(opt) {
 				return sendFile(file);
 			}
 		}
-		if ( opt.verbose ) {
+		if (opt.verbose) {
 			console.log('next');
 		}
 		var currentFile = files.shift();
-		if ( opt.verbose ) {
+		if (opt.verbose) {
 			console.log('currentfile', currentFile);
 		}
-		if ( currentFile ) {
+		if (currentFile) {
 			return processFile(currentFile);
 		}
 		currentDir = queue.shift();
-		if ( null == currentDir ) {
-			if ( opt.verbose ) {
+		if (null == currentDir) {
+			if (opt.verbose) {
 				console.log('enddir');
 			}
 			return cbNext(null, null);
 		} else {
 			var cdir = path.join(currentDir.name, currentDir.sub);
 			fs.readdir(cdir, function(err, dirFiles) {
-				if ( opt.verbose ) {
+				if (opt.verbose) {
 					console.log('readdir', err, dirFiles);
 				}
-				if ( err ) {
+				if (err) {
 					return cbNext(err);
 				}
 				files = dirFiles;
@@ -85,7 +87,7 @@ function dir(opt) {
 				, sub: ''
 				});
 		});
-	var queueRec = [];
+	//Var queueRec = [];
 	var currentDir;
 	var files = [];
 	return next;

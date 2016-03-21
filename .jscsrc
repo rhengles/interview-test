@@ -1,3 +1,12 @@
 {
-	"preset": "node-style-guide"
+	"preset": "node-style-guide",
+	"validateIndentation": "\t",
+	"maximumLineLength": 100,
+	"disallowTrailingComma": true,
+	"requireCamelCaseOrUpperCaseIdentifiers": false,
+	"requireCurlyBraces": false,
+	"requireEarlyReturn": false,
+	"requireSpaceAfterLineComment": false,
+	"requireTrailingComma": false,
+	"esnext": true
 }
