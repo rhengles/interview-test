@@ -1,0 +1,15 @@
+{% macro data_macro() %}
+{% set data_include %}
+{% include "data.html" %}
+{% endset %}
+{% set data_include2 = (data_include | upper) %}
+{{ data_include2 }}
+{% endmacro %}
+
+Template file
+
+Value: {{ SOME_VAR | lower }}
+
+Function: {{ SOME_FUNCTION() | lower }}
+
+Macro: {{ data_macro() }}

@@ -19,7 +19,7 @@ function dir(opt) {
 				{ name: name
 				, stat: null
 				, dir: currentDir
-				};
+			};
 			if (opt.rec || opt.stat) {
 				var fpath = path.join(currentDir.name, currentDir.sub, name);
 				fs.stat(fpath, function(err, stat) {
@@ -41,7 +41,7 @@ function dir(opt) {
 						var sdir =
 							{ name: currentDir.name
 							, sub: path.join(currentDir.sub, name)
-							};
+						};
 						queue.push(sdir);
 						//Return next(cbNext);
 					}
@@ -85,7 +85,7 @@ function dir(opt) {
 			return (
 				{ name: name
 				, sub: ''
-				});
+			});
 		});
 	//Var queueRec = [];
 	var currentDir;

@@ -7,6 +7,5 @@
 	"requireCurlyBraces": false,
 	"requireEarlyReturn": false,
 	"requireSpaceAfterLineComment": false,
-	"requireTrailingComma": false,
-	"esnext": true
+	"requireTrailingComma": false
 }

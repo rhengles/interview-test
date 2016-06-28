@@ -18,12 +18,12 @@ function renderTemplate(name, cb) {
 	fs.writeFile(
 	pathRel('../web/' + name),
 	env.render(name),
-    function(err) {
-	if (err) throw err;
-	console.log('page saved: ' + name);
-	cb();
-    }
-  );
+		function(err) {
+					if (err) throw err;
+					console.log('page saved: ' + name);
+					cb();
+				}
+	);
 
 }
 
