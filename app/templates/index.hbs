@@ -1,0 +1,26 @@
+<!-- index -->
+
+{{#if model}}
+	<p>Logged!</p>
+	<p>public: {{model.public}}</p>
+	<p>private: {{model.private}}</p>
+	<div>
+		<button {{action 'logout'}}>Sair</button>
+	</div>
+{{else}}
+	<h1>Dados de acesso</h1>
+	<form action="" method="POST">
+		<div>
+			{{input type="text" value=inputPrivate placeholder="private_key"}}
+		</div>
+		<div>
+			{{input type="text" value=inputPublic placeholder="public_key"}}
+		</div>
+		<div>
+			<button {{action 'login'}}>Acessar</button>
+		</div>
+	</form>
+{{/if}}
+
+{{outlet}}
+<!-- /index -->
