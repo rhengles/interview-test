@@ -1,0 +1,15 @@
+
+<h1>Dados de acesso</h1>
+
+<form {{action 'authenticate' on='submit'}}>
+	<div>
+		{{input type="text" value=privateKey placeholder="private_key"}}
+	</div>
+	<div>
+		{{input type="text" value=publicKey placeholder="public_key"}}
+	</div>
+	<button type="submit">Login</button>
+	{{#if errorMessage}}
+		<p>{{errorMessage}}</p>
+	{{/if}}
+</form>

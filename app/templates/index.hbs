@@ -1,26 +1,13 @@
 <!-- index -->
-
-{{#if model}}
-	<p>Logged!</p>
-	<p>public: {{model.public}}</p>
-	<p>private: {{model.private}}</p>
-	<div>
-		<button {{action 'logout'}}>Sair</button>
-	</div>
+<div>
+Index
+</div>
+<div>
+{{#if session.isAuthenticated}}
+  <a href="#" {{action 'invalidateSession'}}>Logout</a>
 {{else}}
-	<h1>Dados de acesso</h1>
-	<form action="" method="POST">
-		<div>
-			{{input type="text" value=inputPrivate placeholder="private_key"}}
-		</div>
-		<div>
-			{{input type="text" value=inputPublic placeholder="public_key"}}
-		</div>
-		<div>
-			<button {{action 'login'}}>Acessar</button>
-		</div>
-	</form>
+  {{#link-to 'login'}}Login{{/link-to}}
 {{/if}}
-
+</div>
 {{outlet}}
 <!-- /index -->
