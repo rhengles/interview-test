@@ -1,0 +1,23 @@
+<div class="rvc--form-search">
+	<div class="bg-shadow"></div>
+	<form action="" method="get">
+		<h2>Select the dates to stay in Charlotte</h2>
+		<div class="form-resume">
+			<rvc--form-search--date
+				v-bind:date="checkin"
+			></rvc--form-search--date>
+			<rvc--form-search--date
+				v-bind:date="checkout"
+			></rvc--form-search--date>
+			<button type="button" v-on:click="clickSearch">
+				Search hotels
+			</button>
+		</div>
+		<rvc--calendar
+			v-bind:date="dateCalendar"
+			v-bind:selectionStart="checkin.value"
+			v-bind:selectionEnd="checkout.value"
+			v-on:clickDay="calendarClickDay"
+		></rvc--calendar>
+	</form>
+</div>

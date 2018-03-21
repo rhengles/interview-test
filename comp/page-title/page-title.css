@@ -1,0 +1,35 @@
+.rvc--page-title {
+	padding: 0 0 90px;
+	font-family: 'Montserrat', sans-serif;
+	color: #fff;
+	text-align: center;
+	text-transform: uppercase;
+}
+.rvc--page-title svg {
+	display: block;
+	margin: 0 auto;
+	width: 53px;
+	height: 44px;
+}
+.rvc--page-title .title-pre {
+	display: block;
+	padding: 20px 0 10px;
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+}
+.rvc--page-title .title-main {
+	display: inline-block;
+	padding: 15px 36px;
+	font-size: 76px;
+	font-weight: bold;
+	letter-spacing: 6px;
+	border: 2px solid #fff;
+	border-width: 2px 0;
+}
+.rvc--page-title .title-post {
+	padding: 10px 0;
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 2px;
+}

@@ -1,0 +1,21 @@
+.rvc--header {
+	padding: 0 55px;
+	height: 85px;
+	color: #fff;
+}
+.rvc--header ul {
+	list-style: none;
+}
+.rvc--header ul::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.rvc--header li {
+	float: left;
+	padding: 30px 15px;
+}
+.rvc--header a {
+	color: #fff;
+	text-decoration: none;
+}

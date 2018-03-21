@@ -1,0 +1,19 @@
+<div class="rvc--form-search--date">
+	<div class="date-label">
+		{{date.label}}
+	</div>
+	<div class="date-value" v-if="date.value">
+		<span class="date-month">
+			{{monthName}}
+		</span>
+		<strong class="date-day">
+			{{day}}
+		</strong>
+		<span class="date-year">
+			, {{year}}
+		</span>
+	</div>
+	<div class="date-value empty" v-else>
+		Choose a date
+	</div>
+</div>

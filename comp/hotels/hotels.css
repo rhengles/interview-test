@@ -1,0 +1,7 @@
+.rvc--hotels .hot-loading,
+.rvc--hotels .hot-error {
+	text-align: center;
+}
+.rvc--hotels .hot-error {
+	color: #d32f2f;
+}

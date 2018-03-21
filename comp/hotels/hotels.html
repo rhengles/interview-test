@@ -1,0 +1,9 @@
+<div class="rvc--hotels">
+	<div class="hot-loading" v-if="serviceLoading">
+		Carregando...
+	</div>
+	<div class="hot-error" v-else-if="serviceError">
+		Erro: {{ (serviceError && serviceError.message) || serviceError }}
+	</div>
+	<rvc--hotels--results v-else-if="serviceSuccess"></rvc--hotels--results>
+</div>

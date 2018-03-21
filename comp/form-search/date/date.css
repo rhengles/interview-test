@@ -1,0 +1,20 @@
+.rvc--form-search--date {
+	padding: 15px 0 25px;
+}
+.rvc--form-search--date .date-label {
+	font-size: 22px;
+	letter-spacing: 1px;
+	color: #555;
+	text-transform: uppercase;
+}
+.rvc--form-search--date .date-value {
+	font-size: 20px;
+	letter-spacing: 1px;
+	color: #b5b5b5;
+}
+.rvc--form-search--date .date-value.empty {
+	font-size: 16px;
+}
+.rvc--form-search--date .date-day {
+	margin-right: -0.25em;
+}

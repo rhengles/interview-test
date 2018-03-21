@@ -1,0 +1,52 @@
+.rvc--form-search {
+	margin: 0 auto;
+	width: 836px;
+}
+.rvc--form-search .bg-shadow {
+	margin: 0 0 -390px;
+	height: 390px;
+	box-shadow: 0 0 50px rgba(0,0,0,0.25);
+}
+.rvc--form-search form {
+	padding: 60px 108px;
+	background: #fff;
+	border-radius: 8px;
+}
+.rvc--form-search form::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.rvc--form-search .form-resume {
+	float: left;
+	width: 180px;
+}
+.rvc--form-search .rvc--calendar {
+	float: right;
+	width: 290px;
+}
+.rvc--form-search h2 {
+	padding: 0 0 65px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 22px;
+	font-weight: normal;
+	letter-spacing: 1px;
+	text-align: center;
+}
+.rvc--form-search button {
+	margin-top: 15px;
+	width: 180px;
+	height: 50px;
+	font-family: 'Heebo', sans-serif;
+	font-size: 15px;
+	font-weight: bold;
+	color: #f98100;
+	background: #fff;
+	border: 2px solid #f98100;
+	border-radius: 25px;
+	cursor: pointer;
+}
+.rvc--form-search button:hover {
+	color: #fff;
+	background: #f98100;
+}

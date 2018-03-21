@@ -1,0 +1,98 @@
+.rvc--calendar {
+	text-align: center;
+}
+.rvc--calendar .cal-header {
+	margin: 0 0 10px;
+	border: 2px solid #e3e3e3;
+	border-width: 2px 0;
+}
+.rvc--calendar .cal-header .cal-week {
+	font-size: 15px;
+	color: #b5b5b5;
+	font-family: "Heebo";
+	font-weight: bold;
+}
+.rvc--calendar .cal-month {
+	height: 45px;
+	line-height: 45px;
+	font-size: 16px;
+	letter-spacing: 1px;
+	color: #555;
+}
+.rvc--calendar .cal-week {
+	padding: 2px 0;
+}
+.rvc--calendar .cal-week::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.rvc--calendar .cal-day {
+	float: left;
+	width: 41px;
+	height: 41px;
+	line-height: 41px;
+}
+.rvc--calendar .cal-day::before {
+	content: '';
+	display: block;
+	margin-bottom: -41px;
+	width: 41px;
+	height: 41px;
+}
+.rvc--calendar .cal-day::after {
+	content: '';
+	display: block;
+	margin: -39px auto 2px;
+	width: 37px;
+	height: 37px;
+	line-height: 37px;
+	border-radius: 19px;
+}
+.rvc--calendar .cal-day-text {
+	position: relative;
+	height: 100%;
+	z-index: 1;
+}
+.rvc--calendar .cal-day-enabled {
+	cursor: pointer;
+}
+.rvc--calendar .cal-day-during,
+.rvc--calendar .cal-day-alone {
+	font-weight: bold;
+	color: #fff;
+	background-color: #79bd1a;
+}
+.rvc--calendar .cal-day-start {
+	border-top-left-radius: 21px;
+	border-bottom-left-radius: 21px;
+}
+.rvc--calendar .cal-day-end {
+	border-top-right-radius: 21px;
+	border-bottom-right-radius: 21px;
+}
+.rvc--calendar .cal-day-alone {
+	border-radius: 21px;
+}
+.rvc--calendar .cal-day-end,
+.rvc--calendar .cal-day-alone {
+	color: #79bd1a;
+}
+.rvc--calendar .cal-day-end::after,
+.rvc--calendar .cal-day-alone::after {
+	background: #fff;
+}
+.rvc--calendar .cal-day-enabled:hover::before {
+	border: 2px solid #f98100;
+	border-radius: 21px;
+}
+.rvc--calendar .cal-day-start:hover::after,
+.rvc--calendar .cal-day-end:hover::after {
+	content: '\d7';
+	position: relative;
+	font-size: 37px;
+	font-weight: bold;
+	color: #d32f2f;
+	background: #fff;
+	z-index: 2;
+}
