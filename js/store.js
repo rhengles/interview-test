@@ -11,9 +11,14 @@ var RVC = RVC || {};
 			baseUrl: (RVC.BaseUrl || ''),
 			query: Utils.parseQuery(location.search),
 			pageScroll: [0, 0],
+			serviceHoteisQuery: null,
 			serviceHoteis: null,
 			serviceHoteisLoading: false,
 			serviceHoteisError: null,
+			dateCalendar: (function() {
+				var d = new Date();
+				return new Date(d.getFullYear(), d.getMonth()+1, 1); // mês seguinte
+			}()),
 			formSearch: {
 				checkin: {
 					label: 'Check-in',
@@ -44,6 +49,7 @@ var RVC = RVC || {};
 					var requestData = context.getters.getHoteisRequestData();
 					context.commit('setHoteisError', null);
 					context.commit('setHoteis', null);
+					context.commit('setHoteisQuery', requestData);
 					services.hoteis(
 						requestData,
 						function(loading, error, data) {
@@ -66,6 +72,9 @@ var RVC = RVC || {};
 				if (ps[0] != null && !isNaN(+ps[0])) sps[0] = ps[0];
 				if (ps[1] != null && !isNaN(+ps[1])) sps[1] = ps[1];
 			},
+			setHoteisQuery: function(state, query) {
+				state.serviceHoteisQuery = query;
+			},
 			setHoteis: function(state, data) {
 				state.serviceHoteis = data;
 			},
@@ -74,6 +83,9 @@ var RVC = RVC || {};
 			},
 			setHoteisError: function(state, error) {
 				state.serviceHoteisError = error;
+			},
+			setDateCalendar: function(state, date) {
+				state.dateCalendar = date;
 			},
 			setFormSearchDate: function(state, date) {
 				var formSearch = state.formSearch;

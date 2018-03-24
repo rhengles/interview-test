@@ -14,19 +14,19 @@ var RVC = RVC || {};
 				reqValidate: function(data) {
 					if (!data.checkin) {
 						return {
-							message: 'Data de entrada não informada'
+							message: 'Checkin date not informed'
 						};
 					}
 					if (!data.checkout) {
 						return {
-							message: 'Data de saída não informada'
+							message: 'Checkout date not informed'
 						};
 					}
 				},
 				dataValidate: function(data) {
 					if (!(data && data.hotels)) {
 						return {
-							message: data && data.message || 'Objeto de hotéis inválido'
+							message: data && data.message || 'Invalid response returned from server'
 						};
 					}
 				}

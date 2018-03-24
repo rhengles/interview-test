@@ -13,11 +13,32 @@
 	font-weight: bold;
 }
 .rvc--calendar .cal-month {
+	position: relative;
 	height: 45px;
 	line-height: 45px;
 	font-size: 16px;
 	letter-spacing: 1px;
 	color: #555;
+}
+.rvc--calendar .cal-month-change {
+	position: absolute;
+	top: 0;
+	width: 45px;
+	height: 45px;
+	font-size: 26px;
+	cursor: pointer;
+}
+.rvc--calendar .cal-month-change.prev {
+	left: 0;
+}
+.rvc--calendar .cal-month-change.prev::before {
+	content: '\002190';
+}
+.rvc--calendar .cal-month-change.next {
+	right: 0;
+}
+.rvc--calendar .cal-month-change.next::before {
+	content: '\002192';
 }
 .rvc--calendar .cal-week {
 	padding: 2px 0;

@@ -8,6 +8,7 @@
 	text-transform: uppercase;
 }
 .rvc--form-search--date .date-value {
+	height: 30px;
 	font-size: 20px;
 	letter-spacing: 1px;
 	color: #b5b5b5;

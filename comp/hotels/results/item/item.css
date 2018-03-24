@@ -1,0 +1,106 @@
+.rvc--hotels--results--item {
+	margin: 0 0 64px 60px;
+	padding: 40px;
+	height: 320px;
+	border-radius: 6px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.175);
+}
+.rvc--hotels--results--item .hotel-photo {
+	float: left;
+	margin: 0 40px 0 -100px;
+	width: 240px;
+	height: 240px;
+	background-position: 50% 50%;
+	background-size: cover;
+	border-radius: 6px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.25);
+}
+.rvc--hotels--results--item .hotel-info {
+	float: left;
+	width: 420px;
+	padding-right: 20px;
+}
+.rvc--hotels--results--item .hotel-rating {
+	height: 36px;
+	line-height: 36px;
+}
+.rvc--hotels--results--item .hotel-rating img {
+	margin-right: 2px;
+	width: 12px;
+}
+.rvc--hotels--results--item .hotel-name {
+	height: 52px;
+	font-family: 'Heebo', sans-serif;
+	font-size: 18px;
+	font-weight: bold;
+	line-height: 26px;
+	letter-spacing: 1px;
+	text-transform: uppercase;
+	color: #f98100;
+}
+.rvc--hotels--results--item .hotel-description {
+	height: 105px;
+	font-family: 'Heebo', sans-serif;
+	font-size: 15px;
+	color: #b5b5b5;
+}
+.rvc--hotels--results--item .hotel-actions button {
+	padding: 0 22px;
+	height: 37px;
+	font-family: 'Heebo', sans-serif;
+	font-size: 13px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	border-radius: 19px;
+	cursor: pointer;
+}
+.rvc--hotels--results--item .action-book-now {
+	color: #f98100;
+	background: #fff;
+	border: 1px solid #f98100;
+}
+.rvc--hotels--results--item .action-book-now:hover {
+	color: #fff;
+	background: #f98100;
+}
+.rvc--hotels--results--item .action-price-history {
+	color: #79bd1a;
+	background-color: #fff;
+	border: 1px solid #79bd1a;
+}
+.rvc--hotels--results--item .action-price-history:hover {
+	color: #fff;
+	background-color: #79bd1a;
+}
+.rvc--hotels--results--item .hotel-price {
+	float: left;
+	width: 160px;
+	height: 240px;
+	padding: 50px 0 0;
+	text-align: right;
+	color: #b0b0b0;
+	border-left: 2px solid #ebebeb;
+}
+.rvc--hotels--results--item .price-period-days {
+	letter-spacing: 1px;
+}
+.rvc--hotels--results--item .price-period-total {
+	padding: 12px 0;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 30px;
+	font-weight: bold;
+	letter-spacing: 2px;
+	color: #79bd1a;
+}
+.rvc--hotels--results--item .price-day {
+	font-size: 14px;
+	letter-spacing: 1px;
+}
+.rvc--hotels--results--item .price-total {
+	padding: 4px 0;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 20px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: #f98100;
+}

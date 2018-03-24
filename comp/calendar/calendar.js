@@ -71,6 +71,11 @@
 			clickDay: function(date) {
 				if (!date) return;
 				this.$emit('clickDay', date);
+			},
+			changeMonth: function(change) {
+				var d = this.date;
+				d = new Date(d.getFullYear(), d.getMonth()+change, 1);
+				this.$store.commit('setDateCalendar', d);
 			}
 		}
 	};

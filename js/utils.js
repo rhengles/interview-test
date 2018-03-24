@@ -135,20 +135,6 @@ Utils.isChildOf = function isChildOf(el, compare) {
 	return false;
 };
 
-Utils.iso8601Date = function iso8601Date(date) {
-	if ('string' === typeof date) {
-		date = new Date(date);
-	}
-	if (!(date && date instanceof Date && date.getTime())) {
-		return;
-	}
-	return [
-		Utils.padStart(String(date.getFullYear()), 4, '0'),
-		Utils.padStart(String(date.getMonth()+1), 2, '0'),
-		Utils.padStart(String(date.getDate()), 2, '0'),
-	].join('-');
-};
-
 Utils.getEstados = function getEstados() {
 	return [
 		{ uf: 'AC', nome: 'Acre' },
@@ -208,6 +194,20 @@ Utils.getWeekDayNamesEN = function getWeekDayNamesEN() {
 		'Friday',
 		'Saturday'
 	];
+};
+
+Utils.iso8601Date = function iso8601Date(date) {
+	if ('string' === typeof date) {
+		date = new Date(date);
+	}
+	if (!(date && date instanceof Date && date.getTime())) {
+		return;
+	}
+	return [
+		Utils.padStart(String(date.getFullYear()), 4, '0'),
+		Utils.padStart(String(date.getMonth()+1), 2, '0'),
+		Utils.padStart(String(date.getDate()), 2, '0'),
+	].join('-');
 };
 
 Utils.loadScript = function loadScript(url, cb) {

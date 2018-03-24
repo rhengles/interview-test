@@ -8,7 +8,8 @@
 				return this.$store.state.formSearch.checkout;
 			},
 			dateCalendar: function() {
-				return new Date(2017, 7, 1);
+				// return new Date(2017, 7, 1);
+				return this.$store.state.dateCalendar;
 			}
 		},
 		methods: {

@@ -1,4 +1,24 @@
 .rvc--hotels--results {
-	margin: 50px auto;
+	margin: 0 auto 50px;
 	max-width: 1280px;
+}
+.rvc--hotels--results::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.rvc--hotels--results .result-title {
+	padding: 0 0 64px;
+	font-family: 'Montserrat', sans-serif;
+	font-size: 22px;
+	letter-spacing: 1px;
+	text-align: center;
+}
+.rvc--hotels--results .result-filters {
+	float: left;
+	width: 290px;
+}
+.rvc--hotels--results .result-list {
+	float: right;
+	width: 900px;
 }

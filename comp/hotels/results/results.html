@@ -1,5 +1,16 @@
 <div class="rvc--hotels--results">
-	<div class="hotel-result" v-for="hotel in serviceData">
-		{{hotel.name}}
+	<div class="result-title">
+		Best choices between {{dateStart}} and {{dateEnd}}
+	</div>
+	<div class="result-filters">
+
+	</div>
+	<div class="result-list">
+		<rvc--hotels--results--item
+			v-for="(hotel, index) in serviceData"
+			v-bind:hotel="hotel"
+			v-bind:days="totalDays"
+			v-bind:key="'hotel-'+index"
+		></rvc--hotels--results--item>
 	</div>
 </div>

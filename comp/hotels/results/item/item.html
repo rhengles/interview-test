@@ -1,0 +1,34 @@
+<div class="rvc--hotels--results--item">
+	<div class="hotel-photo" v-bind:style="{backgroundImage:'url('+hotel.image+')'}"></div>
+	<div class="hotel-info">
+		<div class="hotel-rating">
+			<img src="img/star-filled.svg" alt="" v-for="n in hotel.rate" />
+		</div>
+		<div class="hotel-name">
+			{{hotel.name}}
+		</div>
+		<div class="hotel-description">
+			{{hotel.description}}
+		</div>
+		<div class="hotel-actions">
+			<button class="action-book-now">Book now</button>
+			<button class="action-price-history">Price history</button>
+		</div>
+	</div>
+	<div class="hotel-price">
+		<template v-if="days">
+			<div class="price-period-days">
+				Total <strong>{{days}}</strong>
+			</div>
+			<div class="price-period-total">
+				{{formatPrice(hotel.price * days)}}
+			</div>
+		</template>
+		<div class="price-day">
+			Per night
+		</div>
+		<div class="price-total">
+			{{formatPrice(hotel.price)}}
+		</div>
+	</div>
+</div>
