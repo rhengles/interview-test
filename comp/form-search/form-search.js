@@ -14,7 +14,7 @@
 		},
 		methods: {
 			calendarClickDay: function(date) {
-				console.log(date);
+				// console.log(date);
 				this.$store.commit('setFormSearchDate', date);
 			},
 			clickSearch: function() {

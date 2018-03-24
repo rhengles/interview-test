@@ -1,0 +1,4 @@
+(function() {
+	RVC.comp['footer'] = {
+	};
+})();

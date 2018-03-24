@@ -1,0 +1,23 @@
+.rvc--footer {
+	padding: 40px 0 0;
+	text-align: center;
+	color: #d0d0d0;
+	overflow: hidden;
+}
+.rvc--footer .footer-frame {
+	padding: 40px;
+	box-shadow: 0 0 20px rgba(0,0,0,0.125);
+}
+.rvc--footer .footer-social {
+	padding: 0 0 30px;
+}
+.rvc--footer .footer-social a {
+	margin: 0 10px;
+}
+.rvc--footer .footer-social img {
+	width: 34px;
+}
+.rvc--footer .footer-text {
+	font-size: 14px;
+	letter-spacing: 1px;
+}
