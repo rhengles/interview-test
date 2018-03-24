@@ -61,6 +61,17 @@ var RVC = RVC || {};
 								context.commit('setHoteis', data);
 							}
 							resolve();
+							gtag('event', 'hotel_search_submit', {
+								'event_category': 'hotel_search',
+								'event_action': 'submit',
+								'event_label': [
+									Utils.iso8601Date(requestData.checkin),
+									Utils.iso8601Date(requestData.checkout)
+								].join(' to '),
+								'response': error ? 'error' : 'success',
+								'error': error ? String(error) : '',
+								'hotels': data && data.hotels && data.hotels.length
+							});
 						}
 					);
 				});
@@ -91,6 +102,13 @@ var RVC = RVC || {};
 				var formSearch = state.formSearch;
 				var checkin = formSearch.checkin;
 				var checkout = formSearch.checkout;
+				gtag('event', 'hotel_search_click_date', {
+					'event_category': 'hotel_search',
+					'event_action': 'click_date',
+					'event_label': Utils.iso8601Date(date),
+					'previous_checkin': Utils.iso8601Date(checkin.value),
+					'previous_checkout': Utils.iso8601Date(checkout.value)
+				});
 				if (!checkin.value) {
 					checkin.value = date;
 				} else if (date < checkin.value) {

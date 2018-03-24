@@ -76,6 +76,11 @@
 				var d = this.date;
 				d = new Date(d.getFullYear(), d.getMonth()+change, 1);
 				this.$store.commit('setDateCalendar', d);
+				gtag('event', 'hotel_search_change_month', {
+					'event_category': 'hotel_search',
+					'event_action': 'change_month_'+(change>0?'+':'')+change,
+					'event_label': Utils.iso8601Date(d)
+				});
 			}
 		}
 	};
