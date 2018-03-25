@@ -3,7 +3,50 @@
 		Best choices between {{dateStart}} and {{dateEnd}}
 	</div>
 	<div class="result-filters">
-
+		<div class="filters-title">
+			Filters
+		</div>
+		<div class="filter-control filter-control-price-range">
+			<div class="filter-name">
+				Price Range per <strong>night</strong>
+			</div>
+			<div class="control-slider">
+				<div class="control-track" ref="priceRangeTrack">
+					<div class="control-range-active"
+						v-bind:style="{
+							left:minDragPos+'px',
+							width:(maxDragPos-minDragPos)+'px'
+						}"
+					></div>
+					<div class="control-handle min"
+						v-bind:style="{left:minDragPos+'px'}"
+						v-on:mousedown="holdHandleMin"
+					></div>
+					<div class="control-handle max"
+						v-bind:style="{left:maxDragPos+'px'}"
+						v-on:mousedown="holdHandleMax"
+					></div>
+				</div>
+			</div>
+			<div class="control-display">
+				<div class="control-display-handle min">
+					<div class="display-label">
+						Min
+					</div>
+					<div class="display-value">
+						{{formatPrice(minDragValue)}}
+					</div>
+				</div>
+				<div class="control-display-handle max">
+					<div class="display-label">
+						Max
+					</div>
+					<div class="display-value">
+						{{formatPrice(maxDragValue)}}
+					</div>
+				</div>
+			</div>
+		</div>
 	</div>
 	<div class="result-list">
 		<rvc--hotels--results--item

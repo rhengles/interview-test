@@ -1,5 +1,6 @@
 .rvc--root {
 	height: 100%;
+	overflow: auto;
 }
 .rvc--root .page-bg {
 	margin: 0 0 -600px;

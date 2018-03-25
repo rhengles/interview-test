@@ -7,7 +7,9 @@ RVC.comp['root'] = {
 	},
 	data: function() {
 		return {
-			scrollRevert: false
+			scrollRevert: false,
+			mousemove: null,
+			mouseup: null
 		};
 	},
 	methods: {
@@ -35,6 +37,22 @@ RVC.comp['root'] = {
 			setTimeout(function() {
 				vm.scrollRevert = false;
 			}, 30);
+		},
+		observeMouseDrag: function() {
+			var self = this;
+			var docEl = document.documentElement;
+			this.mousemove = function(ev) {
+				self.$emit('mousemove', ev);
+			};
+			this.mouseup = function(ev) {
+				docEl.removeEventListener('mousemove', this.mousemove, false);
+				docEl.removeEventListener('mouseup', this.mouseup, false);
+				self.mousemove = null;
+				self.mouseup = null;
+				self.$emit('mouseup', ev);
+			};
+			docEl.addEventListener('mousemove', this.mousemove, false);
+			docEl.addEventListener('mouseup', this.mouseup, false);
 		}
 	},
 	created: function() {
