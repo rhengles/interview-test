@@ -54,6 +54,7 @@
 			v-bind:hotel="hotel"
 			v-bind:days="totalDays"
 			v-bind:key="'hotel-'+index"
+			v-bind:show="matchFilters(hotel)"
 		></rvc--hotels--results--item>
 	</div>
 </div>

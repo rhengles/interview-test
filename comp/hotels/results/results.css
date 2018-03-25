@@ -24,6 +24,9 @@
 	font-size: 22px;
 	letter-spacing: 1px;
 }
+.rvc--hotels--results .filter-name {
+	color: #b5b5b5;
+}
 .rvc--hotels--results .control-slider {
 	padding: 11px 26px;
 }
@@ -58,6 +61,28 @@
 .rvc--hotels--results .control-handle.max {
 	left: 100%;
 	margin-right: -26px;
+}
+.rvc--hotels--results .control-display::after {
+	content: '';
+	display: block;
+	clear: both;
+}
+.rvc--hotels--results .control-display-handle.min {
+	float: left;
+	text-align: left;
+}
+.rvc--hotels--results .control-display-handle.max {
+	float: right;
+	text-align: right;
+}
+.rvc--hotels--results .display-label {
+	color: #b5b5b5;
+}
+.rvc--hotels--results .display-value {
+	font-size: 22px;
+	font-weight: bold;
+	letter-spacing: 1px;
+	color: #f98100;
 }
 .rvc--hotels--results .result-list {
 	float: right;

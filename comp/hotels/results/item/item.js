@@ -8,6 +8,10 @@
 			},
 			days: {
 				type: Number
+			},
+			show: {
+				type: Boolean,
+				default: true
 			}
 		},
 		computed: {

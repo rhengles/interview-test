@@ -28,6 +28,12 @@ var RVC = RVC || {};
 					label: 'Check-out',
 					value: null
 				}
+			},
+			formFilter: {
+				priceRange: {
+					min: null,
+					max: null
+				}
 			}
 		},
 		getters: {
@@ -132,6 +138,14 @@ var RVC = RVC || {};
 				} else {
 					checkout.value = date;
 				}
+			},
+			setFormFilterPriceRangeMin: function(state, min) {
+				min = Number(min);
+				state.formFilter.priceRange.min = isNaN(min) ? null : min;
+			},
+			setFormFilterPriceRangeMax: function(state, max) {
+				max = Number(max);
+				state.formFilter.priceRange.max = isNaN(max) ? null : max;
 			}
 		}
 	});

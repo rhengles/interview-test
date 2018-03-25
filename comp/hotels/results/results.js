@@ -33,6 +33,12 @@
 			},
 			serviceData: function() {
 				return this.$store.state.serviceHoteis.hotels;
+			},
+			selectedRangeMin: function() {
+				return this.$store.state.formFilter.priceRange.min;
+			},
+			selectedRangeMax: function() {
+				return this.$store.state.formFilter.priceRange.max;
 			}
 		},
 		data: function() {
@@ -40,8 +46,6 @@
 				priceStep: 5,
 				priceRangeMin: 0,
 				priceRangeMax: 100,
-				selectedRangeMin: 0,
-				selectedRangeMax: 100,
 				selectedRangeMinPos: 0,
 				selectedRangeMaxPos: 100,
 				minDragStart: 0,
@@ -89,6 +93,7 @@
 			releaseHandleMin: function (ev) {
 				this.moveHandleMin(ev);
 				this.selectedRangeMinPos = this.minDragPos;
+				this.$store.commit('setFormFilterPriceRangeMin', this.minDragValue);
 				this.$root.$off('mousemove', this.moveHandleMin);
 				this.$root.$off('mouseup', this.releaseHandleMin);
 			},
@@ -125,10 +130,18 @@
 			releaseHandleMax: function(ev) {
 				this.moveHandleMax(ev);
 				this.selectedRangeMaxPos = this.maxDragPos;
+				this.$store.commit('setFormFilterPriceRangeMax', this.maxDragValue);
 				this.$root.$off('mousemove', this.moveHandleMax);
 				this.$root.$off('mouseup', this.releaseHandleMax);
 			},
-			formatPrice(price) {
+			matchFilters: function(hotel) {
+				var min = this.selectedRangeMin;
+				var max = this.selectedRangeMax;
+				if (null != min && !isNaN(min) && hotel.price < min) return false;
+				if (null != max && !isNaN(max) && hotel.price > max) return false;
+				return true;
+			},
+			formatPrice: function(price) {
 				price = Number(price);
 				return isNaN(price) ? '' : '$'+price.toFixed(2).replace(/\.00$/,'');
 			}
@@ -153,10 +166,10 @@
 				max = Math.ceil(max/step)*step;
 			}
 			this.priceRangeMin = min;
-			this.selectedRangeMin = min;
+			this.$store.commit('setFormFilterPriceRangeMin', min);
 			this.minDragValue = min;
 			this.priceRangeMax = max;
-			this.selectedRangeMax = max;
+			this.$store.commit('setFormFilterPriceRangeMax', max);
 			this.maxDragValue = max;
 		},
 		mounted: function() {
