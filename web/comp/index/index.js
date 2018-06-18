@@ -8,6 +8,8 @@ function Index(props) {
 Index.prototype = Object.create(React.Component.prototype);
 Index.prototype.constructor = Index;
 
-global.compMap['index'] = Index;
+global.compMap['index'] = function(callback) {
+	callback(null, Index);
+};
 
 })(BNW);

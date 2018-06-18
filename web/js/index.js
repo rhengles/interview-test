@@ -5,9 +5,21 @@ var BNW = BNW || {};
 
 var Utils = global.Utils;
 global.compMap = {};
+global.containerMap = {};
 
-var compPrefix = 'bnw--';
-var compFactory = {};
+// var componentLoader = Utils.fnComponentLoader({
+// 	prefix: 'bnw--',
+// 	createElement: React.createElement,
+// 	getHref: function(match) {
+// 		return global.BaseUrl + '/comp/' + match.href;
+// 	},
+// 	fnGetJs: function(match) {
+// 		return function() {
+// 			return global.compMap[match.name];
+// 		};
+// 	},
+// 	subComponentLoader: Comp
+// });
 
 function Comp(props) {
 	React.Component.call(this, props);
@@ -17,60 +29,76 @@ function Comp(props) {
 	};
 }
 
+Comp.prepareElement = function(element, match) {
+	element.props['comp'] = element.type;
+	element.type = Comp;
+};
 Comp.prototype = Object.create(React.Component.prototype);
 Comp.prototype.constructor = Comp;
 Comp.prototype.componentDidMount = function() {
 	var self = this;
-	var callerProps = this.props;
-	var id = callerProps.comp;
-	var comp = compFactory[id];
-	if (comp) {
-		return this.setState({ component: comp });
-	}
-	var match = Utils.compPrefixPath(compPrefix, id);
-	if (match) {
-		var href = global.BaseUrl + '/comp/' + match.href;
-		var load = Utils.componentDynamic(match.name, href, global.compMap);
-		load(function resolve(obj) {
-			comp = obj.js;
-			var html = buble.transform(obj.html, {jsx:'h'}).code;
-			html = new Function('h', 'props', 'state', 'Utils', 'return ('+html+');');
-			var h = function() {
-				var type = arguments[0];
-				var attrs = arguments[1] = arguments[1] || {};
-				var typeMatch = Utils.compPrefixPath(compPrefix, type);
-				if (typeMatch) {
-					attrs['comp'] = type;
-					arguments[0] = type = Comp;
-				}
-				if ('class' in attrs) {
-					attrs.className = attrs['class'];
-					delete attrs['class'];
-				}
-				return React.createElement.apply(React, arguments);
-			};
-			comp.prototype.render = function() {
-				return html.call(this, h, callerProps, this.state, Utils);
-			};
-			return self.setState({ component: comp });
-		}, function reject(obj) {
-			console.error(obj);
-			return self.setState({ error: obj });
-		});
-	} else {
-		console.error(new Error('Unknown component '+id));
-	}
+	var id = this.props.comp;
+	loadManager(id, function(err, comp) {
+		if (err) {
+			console.error(err, id, self);
+			return self.setState({ error: err });
+		}
+		return self.setState({ component: comp });
+	});
 };
 Comp.prototype.render = function() {
 	var C = this.state.component;
 	return C ? React.createElement(C, this.props, null) : null;
 };
 
+var compLoader = Utils.fnPrefixLoader();
+var containerLoader = Utils.fnPrefixLoader();
+var loadManager = Utils.fnLoadManager({
+	prefixLoaders: [
+		compLoader,
+		containerLoader
+	],
+	createElement: React.createElement,
+	createElementMods: [
+		Utils.fnCreateElement.fixClassName()
+	],
+});
+compLoader.setOpt({
+	prefix: 'bnw--',
+	loader: Utils.componentDynamic,
+	createElement: loadManager.createElement,
+	prepareElement: Comp.prepareElement,
+	getUrl: function(match) {
+		return global.BaseUrl + 'comp/' + match.href;
+	},
+	setJs: function(match, callback) {
+		global.compMap[match.path](function(err, js) {
+			match.js = js;
+			callback(err);
+		});
+	}
+});
+containerLoader.setOpt({
+	prefix: 'bnw-container--',
+	loader: Utils.componentDynamic,
+	createElement: loadManager.createElement,
+	prepareElement: Comp.prepareElement,
+	getUrl: function(match) {
+		return global.BaseUrl + 'containers/' + match.href;
+	},
+	setJs: function(match, callback) {
+		global.containerMap[match.path](function(err, js) {
+			match.js = js;
+			callback(err);
+		});
+	},
+	pathHtml: function() { return null; }
+});
+
 ReactDOM.render(
-	React.createElement(
-		Comp,
-		{ comp: 'bnw--root', valProp1:{ valProp2:'abc' } },
-		null
+	loadManager.createElement(
+		'bnw--root',
+		{ valProp1:{ valProp2:'abc' } }
 	),
 	document.getElementById('bnw-mount')
 );

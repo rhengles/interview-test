@@ -8,6 +8,8 @@ function Root(props) {
 Root.prototype = Object.create(React.Component.prototype);
 Root.prototype.constructor = Root;
 
-global.compMap['root'] = Root;
+global.compMap['root'] = function(callback) {
+	callback(null, Root);
+};
 
 })(BNW);

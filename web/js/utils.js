@@ -1022,42 +1022,51 @@ Utils.recaptcha = (function() {
 	}
 })();
 
-Utils.componentDynamic = function componentDynamic(name, href, compMap) {
+Utils.componentDynamic = function componentDynamic(opt) {
 	//console.log('Component Dynamic: '+id);
+	var pathHtml = opt.pathHtml;
+	var pathJs   = opt.pathJs  ;
+	var pathCss  = opt.pathCss ;
 	return function(resolve, reject) {
 		var html, js;
 		var done = function done() {
-			if (html && js) {
+			if ((html || !pathHtml) && (js || !pathJs)) {
 				// js.template = html;
-				resolve({js:js,html:html});
+				resolve();
 			}
 		};
-		Utils.loadScript(href+'.js', function(err) {
+		pathJs && Utils.loadScript(pathJs, function(err) {
 			if (err) {
 				return reject({
 					message: 'Error loading component '+path+' script',
 					error: err
 				});
 			}
-			js = compMap[name];
-			done();
+			opt.setJs(null, function(err) {
+				if (err) return reject(err);
+				js = true;
+				done();
+			});
 		});
-		Utils.loadAjax({
-			url: href+'.html',
+		pathHtml && Utils.loadAjax({
+			url: pathHtml,
 			cb: function(err, response) {
 				if (err) {
 					return reject({
-						message: 'Error loading component '+path+' template',
+						message: 'Error loading component '+opt.name+' template',
 						error: err
 					});
 				}
-				html = response;
-				done();
+				opt.setHtml(response, function(err) {
+					if (err) return reject(err);
+					html = true;
+					done();
+				});
 			}
 		});
-		Utils.loadStylesheet(href+'.css', function(err) {
-			if (err) {
-				console.log('Error loading stylesheet for component '+href);
+		pathCss && Utils.loadStylesheet(pathCss, function(err) {
+			if (err && opt.logCssNotFound) {
+				console.log('Error loading stylesheet for component '+opt.name);
 			}
 		});
 	};
@@ -1067,11 +1076,166 @@ Utils.compPrefixPath = function(prefix, id) {
 	//console.log('Component Dynamic: '+id);
 	var plen = prefix.length;
 	if (id.substr(0, plen).toLowerCase() === prefix) {
-		var name = id.substr(plen).replace(/--/g,'/');
-		var last = name.lastIndexOf('/');
-		last = name.substr(last+1);
-		var href = name+'/'+last;
-		return { name: name, href: href };
+		var path = id.substr(plen).replace(/--/g,'/');
+		var last = path.lastIndexOf('/');
+		var name = path.substr(last+1);
+		var href = path+'/'+name;
+		return {
+			id: id,
+			path: path,
+			name: name,
+			href: href
+		};
+	}
+};
+
+Utils.fnPrefixLoader = function() {
+	var prefix;
+	var getUrl;
+	var pathHtml;
+	var pathJs;
+	var pathCss;
+	var setJs;
+	var setHtml;
+	var loadedMap;
+	var loader;
+	var createElement;
+	var prepareElement;
+	var listenersMap = {};
+	return {
+		match: match,
+		prepareSubComponent: prepareSubComponent,
+		setOpt: setOpt
+	};
+	function setOpt(opt) {
+		prefix = opt.prefix.toLowerCase();
+		getUrl = opt.getUrl;
+		pathHtml = opt.pathHtml;
+		pathJs = opt.pathJs;
+		pathCss = opt.pathCss;
+		setJs = opt.setJs;
+		setHtml = opt.setHtml;
+		loadedMap = opt.loadedMap || {};
+		loader = opt.loader;
+		createElement = opt.createElement;
+		prepareElement = opt.prepareElement;
+	}
+	function prepareSubComponent(element) {
+		var match = Utils.compPrefixPath(prefix, element.type);
+		if (match) {
+			prepareElement(element, match);
+		}
+		return match;
+	}
+	function match(id) {
+		var match = Utils.compPrefixPath(prefix, id);
+		match.url      = getUrl   ? getUrl  (match) : match.href;
+		match.pathHtml = pathHtml ? pathHtml(match) : match.url+'.html';
+		match.pathJs   = pathJs   ? pathJs  (match) : match.url+'.js'  ;
+		match.pathCss  = pathCss  ? pathCss (match) : match.url+'.css' ;
+		match.setHtml = function(html, callback) {
+			match.html = html;
+			setHtml ? setHtml(match, callback) : callback();
+		};
+		match.setJs = function(js, callback) {
+			match.js = js;
+			setJs ? setJs(match, callback) : callback();
+		};
+		match.load = function(callback) {
+			return prefixLoader(match, callback);
+		};
+		return match;
+	}
+	function prefixLoader(match, callback) {
+		var path = match.path;
+		var comp = loadedMap[path];
+		if (comp) return callback(null, comp);
+		var matchListeners = listenersMap[path];
+		if (matchListeners) {
+			matchListeners.push(callback);
+			return;
+		}
+		listenersMap[path] = matchListeners = [callback];
+		var fnLoad = loader(match);
+		fnLoad(function resolve() {
+			var comp = match.js;
+			var html = buble.transform(match.html, {jsx:'h'}).code;
+			html = new Function('h', 'props', 'state', 'Utils', 'return ('+html+');');
+			comp.prototype.render = function() {
+				return html.call(this, createElement, this.props, this.state, Utils);
+			};
+			loadedMap[path] = comp;
+			// return callback(null, comp);
+			for (var i = 0, ii = matchListeners.length; i < ii; i++) {
+				matchListeners[i](null, comp);
+			}
+			listenersMap[path] = void 0;
+		}, function reject(err) {
+			for (var i = 0, ii = matchListeners.length; i < ii; i++) {
+				matchListeners[i](err);
+			}
+			listenersMap[path] = void 0;
+		});
+	}
+};
+
+Utils.fnCreateElement = function(mods, createElement) {
+	return function() {
+		var obj = {
+			type: arguments[0],
+			props: arguments[1],
+			args: arguments
+		};
+		for (var i = 0, ii = mods.length; i < ii; i++) {
+			mods[i](obj);
+		}
+		arguments = obj.args;
+		arguments[0] = obj.type;
+		arguments[1] = obj.props;
+		return createElement.apply(null, arguments);
+	};
+};
+
+Utils.fnCreateElement.fixClassName = function() {
+	return function fixClassName(obj) {
+		var props = obj.props;
+		if (props && 'class' in props) {
+			props.className = props['class'];
+			delete props['class'];
+		}
+	};
+};
+
+Utils.fnCreateElement.prepareSubComponents = function(opt) {
+	var loaders = opt.loaders;
+	return function(element) {
+		for (var i = 0, ii = loaders.length; i < ii; i++) {
+			if (loaders[i].prepareSubComponent(element)) break;
+		}
+	};
+};
+
+Utils.fnLoadManager = function(opt) {
+	var prefixLoaders = opt.prefixLoaders;
+	var createElement = Utils.fnCreateElement(
+		opt.createElementMods.concat([
+			Utils.fnCreateElement.prepareSubComponents({
+				loaders: prefixLoaders
+			})
+		]),
+		opt.createElement
+	);
+	componentLoader.createElement = createElement;
+	return componentLoader;
+	function componentLoader(id, callback) {
+		for (var i = 0, ii = prefixLoaders.length; i < ii; i++) {
+			var match = prefixLoaders[i].match(id);
+			if (match) {
+				match.load(callback);
+				return;
+			}
+		}
+		return match;
 	}
 };
 
