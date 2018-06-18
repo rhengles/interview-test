@@ -3,28 +3,26 @@
 var ActionCreators = global.redux.ActionCreators;
 
 function mapStateToProps(state, ownProps) {
-	return {
-		active: ownProps.filter === state.visibilityFilter
-	};
+	return {};
 }
 
 function mapDispatchToProps(dispatch, ownProps) {
 	return {
-		onClick: function() {
-			dispatch(ActionCreators.setVisibilityFilter(ownProps.filter))
+		addTodo: function(text) {
+			dispatch(ActionCreators.addTodo(text));
 		}
 	};
 }
 
-global.containerMap['filter-link'] = function(callback) {
+global.containerMap['add-todo-logic'] = function(callback) {
 	global.loadManager.loadMany({
-		Link: 'bnw--link'
+		AddTodo: 'bnw--add-todo'
 	}, function(err, comps) {
 		if (err) return callback(err);
 		return callback(null, ReactRedux.connect(
 			mapStateToProps,
 			mapDispatchToProps
-		)(comps.Link))
+		)(comps.AddTodo))
 	});
 };
 

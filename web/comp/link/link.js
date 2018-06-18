@@ -14,6 +14,8 @@ Link.propTypes = {
   onClick: PropTypes.func.isRequired
 }
 
-global.compMap['link'] = Link;
+global.compMap['link'] = function(callback) {
+	callback(null, Link);
+};
 
 })(BNW);

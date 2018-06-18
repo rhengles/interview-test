@@ -88,6 +88,12 @@ Utils.forEachProperty = function forEachProperty(obj, cb) {
 	}
 };
 
+Utils.filter = function(list, cb) {
+	return Utils.forEach(list, [], function(val, i) {
+		if (cb(val, i, list)) this.result.push(val);
+	});
+};
+
 Utils.padStart = function padStart(str, len, chars) {
 	var strLen = str.length;
 	if (strLen >= len) return str;
@@ -1022,6 +1028,19 @@ Utils.recaptcha = (function() {
 	}
 })();
 
+Utils.all = function(state, finish, reduce, add) {
+	return item;
+	function item(ref) {
+		add && (ref = add(state, ref));
+		return done;
+		function done() {
+			if (reduce(ref, state, arguments)) {
+				finish(state);
+			}
+		}
+	}
+};
+
 Utils.componentDynamic = function componentDynamic(opt) {
 	//console.log('Component Dynamic: '+id);
 	var pathHtml = opt.pathHtml;
@@ -1031,7 +1050,6 @@ Utils.componentDynamic = function componentDynamic(opt) {
 		var html, js;
 		var done = function done() {
 			if ((html || !pathHtml) && (js || !pathJs)) {
-				// js.template = html;
 				resolve();
 			}
 		};
@@ -1129,21 +1147,23 @@ Utils.fnPrefixLoader = function() {
 	}
 	function match(id) {
 		var match = Utils.compPrefixPath(prefix, id);
-		match.url      = getUrl   ? getUrl  (match) : match.href;
-		match.pathHtml = pathHtml ? pathHtml(match) : match.url+'.html';
-		match.pathJs   = pathJs   ? pathJs  (match) : match.url+'.js'  ;
-		match.pathCss  = pathCss  ? pathCss (match) : match.url+'.css' ;
-		match.setHtml = function(html, callback) {
-			match.html = html;
-			setHtml ? setHtml(match, callback) : callback();
-		};
-		match.setJs = function(js, callback) {
-			match.js = js;
-			setJs ? setJs(match, callback) : callback();
-		};
-		match.load = function(callback) {
-			return prefixLoader(match, callback);
-		};
+		if (match) {
+			match.url      = getUrl   ? getUrl  (match) : match.href;
+			match.pathHtml = pathHtml ? pathHtml(match) : match.url+'.html';
+			match.pathJs   = pathJs   ? pathJs  (match) : match.url+'.js'  ;
+			match.pathCss  = pathCss  ? pathCss (match) : match.url+'.css' ;
+			match.setHtml = function(html, callback) {
+				match.html = html;
+				setHtml ? setHtml(match, callback) : callback();
+			};
+			match.setJs = function(js, callback) {
+				match.js = js;
+				setJs ? setJs(match, callback) : callback();
+			};
+			match.load = function(callback) {
+				return prefixLoader(match, callback);
+			};
+		}
 		return match;
 	}
 	function prefixLoader(match, callback) {
@@ -1159,11 +1179,13 @@ Utils.fnPrefixLoader = function() {
 		var fnLoad = loader(match);
 		fnLoad(function resolve() {
 			var comp = match.js;
-			var html = buble.transform(match.html, {jsx:'h'}).code;
-			html = new Function('h', 'props', 'state', 'Utils', 'return ('+html+');');
-			comp.prototype.render = function() {
-				return html.call(this, createElement, this.props, this.state, Utils);
-			};
+			if (match.html) {
+				var html = buble.transform(match.html, {jsx:'h'}).code;
+				html = new Function('h', 'props', 'state', 'local', 'Utils', 'return ('+html+');');
+				comp.prototype.render = function() {
+					return html.call(this, createElement, this.props, this.state, this.local, Utils);
+				};
+			}
 			loadedMap[path] = comp;
 			// return callback(null, comp);
 			for (var i = 0, ii = matchListeners.length; i < ii; i++) {
@@ -1225,9 +1247,10 @@ Utils.fnLoadManager = function(opt) {
 		]),
 		opt.createElement
 	);
-	componentLoader.createElement = createElement;
-	return componentLoader;
-	function componentLoader(id, callback) {
+	loadManager.createElement = createElement;
+	loadManager.loadMany = loadMany;
+	return loadManager;
+	function loadManager(id, callback) {
 		for (var i = 0, ii = prefixLoaders.length; i < ii; i++) {
 			var match = prefixLoaders[i].match(id);
 			if (match) {
@@ -1236,6 +1259,46 @@ Utils.fnLoadManager = function(opt) {
 			}
 		}
 		return match;
+	}
+	function loadMany(idMap, callback) {
+		var objList = [];
+		var compMap = {};
+		var state = {
+			list: objList,
+			compMap: compMap,
+			errors: [],
+			remain: 0
+		};
+		var addItem = Utils.all(state, function manyFinish(state) {
+			if (state.errors.length) {
+				callback(state.errors, compMap, state);
+			} else {
+				callback(null, compMap, state);
+			}
+		}, function manyReduce(index, state, args) {
+			var item = objList[index];
+			var err = args[0];
+			var comp = args[1];
+			item.err = err;
+			item.comp = comp;
+			compMap[item.key] = comp;
+			err && state.errors.push(item);
+			state.remain -= 1;
+			return !state.remain;
+		});
+		Utils.forEachProperty(idMap, function(id, key) {
+			var index = objList.length;
+			var done = addItem(index);
+			objList[index] = {
+				id: id,
+				key: key,
+				index: index,
+				err: null,
+				comp: null
+			};
+			state.remain += 1;
+			loadManager(id, done);
+		});
 	}
 };
 

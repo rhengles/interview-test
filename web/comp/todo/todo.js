@@ -14,6 +14,8 @@ Todo.propTypes = {
 	text: PropTypes.string.isRequired
 };
 
-global.compMap['todo'] = Todo;
+global.compMap['todo'] = function(callback) {
+	callback(null, Todo);
+};
 
 })(BNW);

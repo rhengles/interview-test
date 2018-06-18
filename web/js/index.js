@@ -30,14 +30,16 @@ function Comp(props) {
 }
 
 Comp.prepareElement = function(element, match) {
-	element.props['comp'] = element.type;
+	var props = element.props || {};
+	props['$comp'] = element.type;
 	element.type = Comp;
+	element.props = props;
 };
 Comp.prototype = Object.create(React.Component.prototype);
 Comp.prototype.constructor = Comp;
 Comp.prototype.componentDidMount = function() {
 	var self = this;
-	var id = this.props.comp;
+	var id = this.props.$comp;
 	loadManager(id, function(err, comp) {
 		if (err) {
 			console.error(err, id, self);
@@ -48,7 +50,12 @@ Comp.prototype.componentDidMount = function() {
 };
 Comp.prototype.render = function() {
 	var C = this.state.component;
-	return C ? React.createElement(C, this.props, null) : null;
+	var props = {};
+	Utils.forEachProperty(this.props, function(value, key) {
+		if ('$comp' !== key) props[key] = value;
+	});
+	var args = [C, props].concat(this.children || []);
+	return C ? React.createElement.apply(React, args) : null;
 };
 
 var compLoader = Utils.fnPrefixLoader();
@@ -92,13 +99,22 @@ containerLoader.setOpt({
 			callback(err);
 		});
 	},
+	pathCss: function() { return null; },
 	pathHtml: function() { return null; }
 });
 
+global.loadManager = loadManager;
+global.compLoader = compLoader;
+global.containerLoader = containerLoader;
+
 ReactDOM.render(
-	loadManager.createElement(
-		'bnw--root',
-		{ valProp1:{ valProp2:'abc' } }
+	React.createElement(
+		ReactRedux.Provider,
+		{ store: global.redux.store },
+		loadManager.createElement(
+			'bnw--root',
+			{ valProp1: { valProp2:'abc' } }
+		)
 	),
 	document.getElementById('bnw-mount')
 );

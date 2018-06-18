@@ -1,76 +1,89 @@
+(function(global) {
 /**
 	* action types
 	**/
-​
-var Actions = {
+
+var ActionTypes = {
 	ADD_TODO: 'ADD_TODO',
 	TOGGLE_TODO: 'TOGGLE_TODO',
 	SET_VISIBILITY_FILTER: 'SET_VISIBILITY_FILTER'
-​};
+};
 
 /**
 	* other constants
 	**/
-​
+
 var VisibilityFilters = {
 	SHOW_ALL: 'SHOW_ALL',
 	SHOW_COMPLETED: 'SHOW_COMPLETED',
 	SHOW_ACTIVE: 'SHOW_ACTIVE'
 };
-​
+
 /**
 	* action creators
 	**/
-​
+
 var ActionCreators = {
 	addTodo: function (text) {
-	  return { type: ADD_TODO, text }
+		return { type: ActionTypes.ADD_TODO, text }
 	},
 	toggleTodo: function (index) {
-	  return { type: TOGGLE_TODO, index }
+		return { type: ActionTypes.TOGGLE_TODO, index }
 	},
 	setVisibilityFilter: function (filter) {
-	  return { type: SET_VISIBILITY_FILTER, filter }
+		return { type: ActionTypes.SET_VISIBILITY_FILTER, filter }
 	}
 };
 
-function todos(state, action) {
-	state || (state = []);
-	switch (action.type) {
-		case Actions.ADD_TODO:
-			return state.concat([
-				{
-					text: action.text,
-					completed: false
-				}
-			]);
-		case Actions.TOGGLE_TODO:
-			return state.map(function(todo, index) {
-				if (index === action.index) {
-					return Object.assign({}, todo, {
-						completed: !todo.completed
-					});
-				}
-				return todo;
-			});
-		default:
-			return state;
+var Reducers = {
+	todos: function todos(state, action) {
+		state || (state = []);
+		switch (action.type) {
+			case ActionTypes.ADD_TODO:
+				return state.concat([
+					{
+						text: action.text,
+						completed: false
+					}
+				]);
+			case ActionTypes.TOGGLE_TODO:
+				return state.map(function(todo, index) {
+					if (index === action.index) {
+						return Object.assign({}, todo, {
+							completed: !todo.completed
+						});
+					}
+					return todo;
+				});
+			default:
+				return state;
+		}
+	},
+	visibilityFilter: function visibilityFilter(state, action) {
+		state || (state = VisibilityFilters.SHOW_ALL);
+		switch (action.type) {
+			case ActionTypes.SET_VISIBILITY_FILTER:
+				return action.filter
+			default:
+				return state
+		}
 	}
-}
-​
-function visibilityFilter(state, action) {
-	state || (state = VisibilityFilters.SHOW_ALL);
-	switch (action.type) {
-		case Actions.SET_VISIBILITY_FILTER:
-			return action.filter
-		default:
-			return state
-	}
-}
+};
 
-var todoApp = Redux.combineReducers({
-	visibilityFilter: visibilityFilter,
-	todos: todos
+var rootReducer = Redux.combineReducers({
+	todos: Reducers.todos,
+	visibilityFilter: Reducers.visibilityFilter
 });
 
-var store = Redux.createStore(todoApp);
+var store = Redux.createStore(rootReducer);
+
+global.redux = {
+	ActionTypes: ActionTypes,
+	VisibilityFilters: VisibilityFilters,
+	ActionCreators: ActionCreators,
+	Reducers: Reducers,
+	rootReducer: rootReducer,
+	store: store
+};
+
+})(BNW);

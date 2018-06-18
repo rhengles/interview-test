@@ -19,6 +19,8 @@ TodoList.propTypes = {
 	onTodoClick: PropTypes.func.isRequired
 };
 
-global.compMap['todo-list'] = TodoList;
+global.compMap['todo-list'] = function(callback) {
+	callback(null, TodoList);
+};
 
 })(BNW);
