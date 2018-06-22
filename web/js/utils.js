@@ -293,7 +293,7 @@ Utils.loadStylesheet = function loadStylesheet(url, cb) {
 	head.appendChild(link);
 };
 
-Utils.loadAjax = function loadAjax(opt) {
+Utils.loadAjax = function loadAjax(opt, cb) {
 	var req = new XMLHttpRequest;
 	var head = opt.headers;
 	req.addEventListener('load', function() {
@@ -301,10 +301,10 @@ Utils.loadAjax = function loadAjax(opt) {
 		if (req.status < 200 || req.status >= 300) {
 			err = new AjaxError('HTTP '+req.status+' '+req.statusText, req);
 		}
-		opt.cb(err, req.responseText, req);
+		cb(err, req.responseText, req);
 	});
 	req.addEventListener('error', function(err) {
-		opt.cb(new AjaxError('Erro de rede', req, err), null, req);
+		cb(new AjaxError('Erro de rede', req, err), null, req);
 	});
 	req.open(opt.method || 'GET', opt.url);
 	if (head) {
@@ -322,10 +322,11 @@ Utils.loadService = function(opt) {
 	if ( reqError ) {
 		return callback(false, reqError);
 	}
-	Utils.loadAjax(opt.envPrepare(req, function(err, data) {
+	var parseResponse = opt.parseResponse;
+	var prep = opt.envPrepare(req, function(err, data) {
 		var serviceError = null;
 		var dataError = null;
-		var isJson = false;
+		var isParsed = false;
 		if (err) {
 			serviceError = {
 				message: 'Erro ao carregar o serviço',
@@ -333,8 +334,12 @@ Utils.loadService = function(opt) {
 			};
 		}
 		try {
-			data = JSON.parse(data);
-			isJson = true;
+			if (parseResponse) {
+				data = parseResponse(data);
+			} else if (!opt.asText) {
+				data = JSON.parse(data);
+			}
+			isParsed = true;
 		} catch (e) {
 			if (!serviceError) {
 				serviceError = {
@@ -343,11 +348,12 @@ Utils.loadService = function(opt) {
 				};
 			}
 		}
-		if (isJson) {
+		if (isParsed) {
 			dataError = opt.dataValidate(data);
 		}
 		return callback(false, dataError || serviceError, data);
-	}));
+	});
+	Utils.loadAjax(prep.req, prep.cb);
 	return callback(true);
 };
 
@@ -1066,21 +1072,18 @@ Utils.componentDynamic = function componentDynamic(opt) {
 				done();
 			});
 		});
-		pathHtml && Utils.loadAjax({
-			url: pathHtml,
-			cb: function(err, response) {
-				if (err) {
-					return reject({
-						message: 'Error loading component '+opt.name+' template',
-						error: err
-					});
-				}
-				opt.setHtml(response, function(err) {
-					if (err) return reject(err);
-					html = true;
-					done();
+		pathHtml && Utils.loadAjax({ url: pathHtml }, function(err, response) {
+			if (err) {
+				return reject({
+					message: 'Error loading component '+opt.name+' template',
+					error: err
 				});
 			}
+			opt.setHtml(response, function(err) {
+				if (err) return reject(err);
+				html = true;
+				done();
+			});
 		});
 		pathCss && Utils.loadStylesheet(pathCss, function(err) {
 			if (err && opt.logCssNotFound) {
