@@ -1,0 +1,13 @@
+{
+	"name": "interview-test",
+	"version": "0.0.0",
+	"scripts": {
+		"dev": "vite",
+		"build": "vite build",
+		"serve": "vite preview"
+	},
+	"devDependencies": {
+		"@arijs/frontend": "^0.2.5",
+		"vite": "^2.0.5"
+	}
+}
