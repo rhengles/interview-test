@@ -49,6 +49,9 @@ try {
 if (!winner) return;
 const {Vue, vueSrc} = winner;
 console.log('Load Vue from', vueSrc, Vue);
+window.Vue = Vue;
+
+const compFoo = await import('/comp/foo');
 
 })();
 
