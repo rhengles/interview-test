@@ -17,8 +17,8 @@
 		"prerender": "node task/prerender.mjs"
 	},
 	"dependencies": {
-		"@arijs/frontend": "^0.2.6",
-		"@arijs/vue-prerender": "^0.0.3",
+		"@arijs/frontend": "file:../front-end",
+		"@arijs/vue-prerender": "file:../vue-prerender",
 		"@vue/compiler-dom": "^3.0.7",
 		"@vue/server-renderer": "^3.0.7",
 		"express": "^4.17.1",

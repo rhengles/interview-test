@@ -1,0 +1,9 @@
+<ul class="app--hiplatform--lista">
+	<app--hiplatform--item
+		v-for="(item, index) in lista"
+		v-bind:item="item"
+		v-bind:key="preKey+index"
+		v-bind:preKey="preKey+index+'_'"
+		v-on:item-click="onItemClick"
+	/>
+</ul>

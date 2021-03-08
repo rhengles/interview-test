@@ -1,0 +1,59 @@
+.app--hiplatform--item {
+	margin: 0;
+	padding: 0;
+}
+.app--hiplatform--item .item-info {
+	display: flex;
+	padding: 0.5em 0;
+}
+.app--hiplatform--item .item-info:hover {
+	background: #00000020;
+}
+.app--hiplatform--item .info-check {
+	display: inline-block;
+	width: 2em;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+.app--hiplatform--item .check-full {
+	background-image: url(/img/icon-check-on.svg);
+}
+.app--hiplatform--item .item-info:hover > .check-full {
+	background-image: url(/img/icon-check-on-hover.svg);
+}
+.app--hiplatform--item .check-partial {
+	background-image: url(/img/icon-check-mid.svg);
+}
+.app--hiplatform--item .item-info:hover > .check-partial {
+	background-image: url(/img/icon-check-mid-hover.svg);
+}
+.app--hiplatform--item .check-empty {
+	background-image: url(/img/icon-check-off.svg);
+}
+.app--hiplatform--item .info-name {
+	flex: 1 1 auto;
+}
+.app--hiplatform--item .info-expand {
+	display: inline-block;
+	width: 2em;
+	background-repeat: no-repeat;
+	background-position: 50% 50%;
+}
+.app--hiplatform--item .expand-open {
+	background-image: url(/img/icon-down.svg);
+}
+.app--hiplatform--item .item-info:hover > .expand-open {
+	background-image: url(/img/icon-down-hover.svg);
+}
+.app--hiplatform--item .expand-close {
+	background-image: url(/img/icon-up.svg);
+}
+.app--hiplatform--item .item-info:hover > .expand-close {
+	background-image: url(/img/icon-up-hover.svg);
+}
+.app--hiplatform--item .item-children {
+	padding: 0 0 0 1.5em;
+}
+.app--hiplatform--item.item-close .item-children {
+	display: none;
+}

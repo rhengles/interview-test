@@ -1,0 +1,29 @@
+<li v-bind:class="[
+	'app--hiplatform--item',
+	item.level >= 0 ? 'level-'+item.level : '',
+	item.expandOpen ? 'item-open' : 'item-close'
+]">
+	<div class="item-info">
+		<span v-bind:class="[
+			'info-check',
+			item.subTotal
+			? (item.subSelected === item.subTotal
+				? 'check-full'
+				: ((item.subSelected + item.subPartialSelected) === 0
+					? 'check-empty'
+					: 'check-partial'))
+			: (item.selfSelected
+				? 'check-full'
+				: 'check-empty')
+		]" v-on:click="onItemClick(item)"></span>
+		<span class="info-name" v-on:click="onItemClick(item)" v-text="item.name"></span>
+		<span v-bind:class="['info-expand', numChildren ? item.expandOpen ? 'expand-open' : 'expand-close' : '']" v-on:click="onClickExpand"></span>
+	</div>
+	<app--hiplatform--lista
+		v-if="numChildren"
+		v-bind:lista="item.children"
+		v-bind:preKey="preKey"
+		class="item-children"
+		v-on:item-click="onItemClick"
+	/>
+</li>

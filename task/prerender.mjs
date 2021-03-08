@@ -47,8 +47,9 @@ function pgUsers(path) {
 }
 
 var pages = [
-	{ route: '/', waitUsers: true },
-	{ route: '/about' }
+	{ route: '/', waitHiPlatformData: true },
+	{ route: '/about' },
+	{ route: '/users', waitUsers: true }
 ];
 var pgSuccess = [];
 var pgError = [];
@@ -79,20 +80,20 @@ services.getUsersLista().then(function({data}) {
 	forEach(data.data, function(item, index) {
 		if (item) pages.push(pgUsers(String(index)));
 	});
-	// console.log(pages);
+	console.log('/** User pages: **/', pages);
 	console.log('/** :: START :: **/');
 	setTimeout(runNext, 0);
 }).catch(function({error}) {
-	console.error('Error when loading users', error);
+	console.error('Error when loading data', error);
 });
 
 function runOrNot(next) {
 	// return true;
 	// for testing specific routes
 	return false
-		|| ('/' === next.route)
-		|| ('/about' === next.route)
-		|| ('/users/0' === next.route);
+		|| ('/' === next.route);
+		// || ('/about' === next.route)
+		// || ('/users/0' === next.route);
 }
 
 function runNext() {
@@ -219,8 +220,15 @@ async function ssr(next) {
 
 	console.log(' +  init scripts');
 
-	await jsGlobal.users.load();
-	console.log(' +  waited for users!');
+	if (next.waitUsers) {
+		await jsGlobal.users.load();
+		console.log(' +  waited for users!');
+	}
+
+	if (next.waitHiPlatformData) {
+		await jsGlobal.hiPlatformData.load();
+		console.log(' +  waited for HiPlatform data!');
+	}
 
 	jsGlobal.initRouter();
 	const { router } = jsGlobal;

@@ -38,6 +38,15 @@ var services = global.services = {
 	},
 	initialState: null,
 
+	getHiPlatformData: function () {
+		return loadAjaxPromise({
+			url: services.host+'data.json',
+			typeExpect: loadAjax.typeJson,
+			xhrFields: services.xhrFields,
+			validate: serviceValidate
+		});
+	},
+
 	getUsersLista: function () {
 		return loadAjaxPromise({
 			url: services.host+'users.json',
@@ -46,7 +55,7 @@ var services = global.services = {
 			validate: serviceValidate
 		});
 	}
-
+	
 };
 
 }(_app$);

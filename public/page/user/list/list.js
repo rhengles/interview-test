@@ -25,10 +25,10 @@
 			}
 		});
 		users.load();
-		global.log(' // page/home: after users.load()', {
+		global.log(' // page/user/list: after users.load()', {
 			loading: users.loading.value,
 			error: users.error.value,
-			lista: users.lista.value
+			lista: typeof users.lista.value
 		});
 		return {
 			modal: modal,
