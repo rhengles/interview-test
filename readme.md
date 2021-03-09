@@ -1,5 +1,7 @@
 # Interview Test HiPlatform
 
+Link para visualização: [https://hiplatform.hengles.net/](https://hiplatform.hengles.net/)
+
 Este projeto usa o framework Vue.js v3, mas ele usa minha arquitetura própria que pode ser encontrado neste link: [arijs/vue-next-example](https://github.com/arijs/vue-next-example).
 
 ## Arquitetura sem build
@@ -8,9 +10,9 @@ Ele é uma arquitetura que permite você desenvolver um projeto sem nenhuma ferr
 
 Quando o projeto é rodado sem build, cada componente é carregado assincronamente (e preguiçosamente) somente no momento que ele é necessário. Se meu projeto tiver 1000 componentes mas a página usar apenas 10, somente estes 10 serão carregados.
 
-Além disso, como o projeto não tem build, como a página sabe quais componentes carregar? Ela descobre no momento em que eles são chamados dentro dos templates. Se o componente não foi carregado ainda (e não está no meio do carregamento), então a página carrega o js, o html e o css do template. O css é adicionado na página com uma tag `<link>` normal.
+Além disso, como o projeto não tem build, como a página sabe quais componentes carregar? Ela descobre no momento em que eles são chamados dentro dos templates. Se o componente não foi carregado ainda (e não está no meio do carregamento), então a página carrega o js, o html e o css do template.
 
-Já o html é lido como string e colocado como a propriedade `template` do objeto js do componente. Então esse objeto é registrado como um componente no Vue para que ele possa ser renderizado.
+O css é adicionado na página com uma tag `<link>` normal. Já o html é lido como string e colocado como a propriedade `template` do objeto js do componente. Então esse objeto é registrado como um componente no Vue para que ele possa ser renderizado.
 
 Apesar de interessante do ponto de vista técnico, obviamente não é a melhor forma de fazer um site que ficará disponível para acesso pelo público. Por isso, eu criei um sistema capaz de pré-renderizar todas as páginas de um site feito com essa arquitetura, que está neste link: [arijs/vue-prerender](https://github.com/arijs/vue-prerender).
 
