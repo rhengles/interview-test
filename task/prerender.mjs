@@ -295,7 +295,8 @@ async function ssr(next) {
 					jsGlobalVar,
 					jsInitialState: services.cacheFront,
 					compile,
-					formatJs: minify,
+					// formatJs: minify,
+					formatJs: async code => ({code}),
 					callback: function(err, text) {
 						return opt.callback(err, {
 							name: 'comp scripts',
