@@ -12,7 +12,8 @@ var RVC = RVC || {};
 
 	services.hoteis = function(data, cb) {
 		return {
-			url: 'https://www.raphaelfabeni.com.br/rv/hotels.json'
+			// url: 'https://www.raphaelfabeni.com.br/rv/hotels.json'
+			url: '/data/hotels.json'
 				+ '?checkin='
 				+ Utils.iso8601Date(data.checkin)
 				+ '&checkout='
